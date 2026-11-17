@@ -1,0 +1,24 @@
+name: unpack-assets
+on:
+  push:
+    paths:
+      - 'encoded/**'
+      - '.github/workflows/unpack-assets.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode and unpack assets
+        run: |
+          set -e
+          cat encoded/encoded/site-assets.tar.gz.b64.part1 encoded/encoded/site-assets.tar.gz.b64.part2 | base64 -d | tar xzf -
+          rm -rf encoded
+          git config user.name "moriahdayan"
+          git config user.email "dayanmoriah@gmail.com"
+          git add -A
+          git commit -m "Unpack bundled site assets (styles, images, fonts)" || echo "no changes"
+          git push
