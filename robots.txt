@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://moriahdayan.github.io/sitemap.xml
